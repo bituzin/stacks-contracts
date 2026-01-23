@@ -30,6 +30,7 @@
     (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
     (map-set bridge-transactions {tx-id: tx-id}
              {sender: tx-sender, amount: (- amount fee), target-chain: target-chain, status: "locked"})
+    (print {event: "bridge-lock", tx-id: tx-id, sender: tx-sender, amount: (- amount fee), target-chain: target-chain})
     (ok (- amount fee))))
 
 ;; Release assets from bridge
