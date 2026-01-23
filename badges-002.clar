@@ -15,13 +15,11 @@
 (define-public (mint-badge (recipient principal) (points uint) (name (string-ascii 50)) (description (string-ascii 200)) (image (string-ascii 200)))
   (let ((token-id (+ (var-get last-token-id) u1)))
     (asserts! (is-eq tx-sender contract-owner) err-owner-only)
-    
     (try! (nft-mint? commitment-badge token-id recipient))
     (var-set last-token-id token-id)
-    
     (map-set token-metadata token-id {name: name, description: description, image: image})
     (map-set milestone-badges points token-id)
-    
+    (print {event: "badge-minted", token-id: token-id, recipient: recipient, points: points})
     (ok token-id)
   )
 )
