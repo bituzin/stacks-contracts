@@ -246,6 +246,7 @@
       (add-creator-poll tx-sender poll-id)
       (var-set total-active-polls (+ (var-get total-active-polls) u1))
       
+      (print {event: "poll-created", poll-id: poll-id, creator: tx-sender, title: title, ends-at: ends-at})
       (ok poll-id)
     )
   )
@@ -309,6 +310,7 @@
       )
     )
     
+    (print {event: "vote-cast", poll-id: poll-id, voter: tx-sender, option-index: option-index})
     (ok true)
   )
 )
@@ -344,6 +346,7 @@
       (merge poll {last-update-timestamp: current-timestamp})
     )
     
+    (print {event: "vote-changed", poll-id: poll-id, voter: tx-sender, old-option-index: old-option-index, new-option-index: new-option-index})
     (ok true)
   )
 )
@@ -361,6 +364,7 @@
     (var-set total-active-polls (- (var-get total-active-polls) u1))
     (var-set total-cancelled-polls (+ (var-get total-cancelled-polls) u1))
     
+    (print {event: "poll-cancelled", poll-id: poll-id, canceller: tx-sender})
     (ok true)
   )
 )
@@ -378,6 +382,7 @@
     (var-set total-active-polls (- (var-get total-active-polls) u1))
     (var-set total-closed-polls (+ (var-get total-closed-polls) u1))
     
+    (print {event: "poll-closed", poll-id: poll-id, closer: tx-sender})
     (ok true)
   )
 )
