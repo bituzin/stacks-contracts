@@ -57,6 +57,7 @@
     (asserts! (> rewards-result u0) (err u407))
     (map-set user-rewards tx-sender (+ (default-to u0 (map-get? user-rewards tx-sender)) rewards-result))
     (map-set stake-timestamps tx-sender block-height)
+    (print {event: "rewards-claimed", user: tx-sender, amount: rewards-result})
     (ok rewards-result)))
 
 ;; Set staking parameters
@@ -64,12 +65,14 @@
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set reward-rate rate)
+    (print {event: "reward-rate-set", by: tx-sender, rate: rate})
     (ok true)))
 
 (define-public (set-min-stake (amount uint))
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set min-stake amount)
+    (print {event: "min-stake-set", by: tx-sender, amount: amount})
     (ok true)))
 
 ;; Read functions
