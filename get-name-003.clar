@@ -101,6 +101,7 @@
         ;; Update stats
         (var-set total-usernames (+ (var-get total-usernames) u1))
         
+        (print {event: "username-registered", username: username, owner: caller, registered-at: current-time})
         (ok username)
     )
 )
@@ -123,6 +124,7 @@
         ;; Update stats
         (var-set total-usernames (- (var-get total-usernames) u1))
         
+        (print {event: "username-released", username: username, owner: caller})
         (ok true)
     )
 )
