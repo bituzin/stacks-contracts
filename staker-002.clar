@@ -25,6 +25,7 @@
       (map-set user-stakes tx-sender (+ current-stake amount))
       (map-set stake-timestamps tx-sender block-height)
       (var-set total-staked (+ (var-get total-staked) amount))
+      (print {event: "staked", user: tx-sender, amount: amount})
       (ok amount))))
 
 ;; Unstake STX
@@ -37,6 +38,7 @@
     (try! (as-contract (stx-transfer? amount tx-sender tx-sender)))
     (map-set user-stakes tx-sender (- current-stake amount))
     (var-set total-staked (- (var-get total-staked) amount))
+    (print {event: "unstaked", user: tx-sender, amount: amount})
     (ok amount)))
 
 ;; Calculate rewards
