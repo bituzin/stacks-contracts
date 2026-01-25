@@ -41,7 +41,9 @@
 (define-public (distribute-rewards)
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
-    (ok (calculate-rewards))))
+    (let ((rewards (calculate-rewards)))
+      (print {event: "rewards-distributed", by: tx-sender, rewards: rewards})
+      (ok rewards))))
 
 (define-private (calculate-rewards)
   (let ((total (var-get total-staked))
@@ -57,12 +59,14 @@
   (let ((total (+ (+ staking liquidity) lending)))
     (asserts! (is-eq total u100) (err u400))
     (map-set strategy-allocations tx-sender {staking: staking, liquidity: liquidity, lending: lending})
+    (print {event: "allocation-set", user: tx-sender, staking: staking, liquidity: liquidity, lending: lending})
     (ok true)))
 
 (define-public (update-oracle (new-oracle principal))
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set oracle-contract new-oracle)
+    (print {event: "oracle-updated", by: tx-sender, new-oracle: new-oracle})
     (ok true)))
 
 (define-read-only (get-user-stake (user principal))
