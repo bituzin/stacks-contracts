@@ -109,7 +109,7 @@
     ;; Validate
     (asserts! (<= count u10) ERR_EXCEED_MAX)
     (asserts! (> total-amount u0) ERR_ZERO_AMOUNT)
-    
+    (print {event: "multisend-ft", sender: tx-sender, token: token-principal, recipients-count: count, total-amount: total-amount})
     ;; Execute transfers - unrolled loop for up to 10 recipients
     ;; This is the standard pattern in Clarity when you need to use traits in a loop
     (transfer-ft-recipients token-contract recipients)
