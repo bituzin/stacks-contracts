@@ -30,6 +30,7 @@
       decimals: decimals,
       source: source
     })
+    (print {event: "price-updated", symbol: symbol, price: price, decimals: decimals, source: source, by: tx-sender})
     (ok true)))
 
 ;; Get price feed
