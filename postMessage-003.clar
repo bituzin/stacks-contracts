@@ -69,6 +69,7 @@
     (map-set user-message-count tx-sender (+ user-msg-count u1))
     
     (var-set total-messages msg-id)
+    (print {event: "message-posted", msg-id: msg-id, sender: tx-sender, timestamp: current-timestamp})
     (ok msg-id)
   )
 )
