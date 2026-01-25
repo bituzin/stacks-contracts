@@ -59,6 +59,7 @@
     (var-set next-gm-id (+ gm-id u1))
     (var-set total-gms-alltime (+ (var-get total-gms-alltime) u1))
       
+    (print {event: "gm-sent", gm-id: gm-id, user: sender, block: current-block, timestamp: current-timestamp})
     (ok gm-id)
   )
 )

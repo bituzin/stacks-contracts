@@ -11,6 +11,7 @@
     (var-set vault-count vault-id)
     (map-set vault-registry vault-id tx-sender)
     (map-set user-vaults tx-sender vault-id)
+    (print {event: "vault-created", vault-id: vault-id, owner: tx-sender})
     (ok vault-id)
   )
 )

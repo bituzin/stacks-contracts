@@ -36,6 +36,29 @@
 (define-public (transfer (token-id uint) (sender principal) (recipient principal))
   (begin
     (asserts! (is-eq tx-sender sender) err-not-token-owner)
-    (nft-transfer? commitment-badge token-id sender recipient)
+    (let ((result (nft-transfer? commitment-badge token-id sender recipient)))
+      (print {event: "badge-transferred", token-id: token-id, from: sender, to: recipient})
+      result
+    )
+  )
+)
+
+;; Event: zmiana metadanych odznaki
+(define-public (update-metadata (token-id uint) (name (string-ascii 50)) (description (string-ascii 200)) (image (string-ascii 200)))
+  (begin
+    (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+    (map-set token-metadata token-id {name: name, description: description, image: image})
+    (print {event: "badge-metadata-updated", token-id: token-id, name: name, description: description, image: image})
+    (ok true)
+  )
+)
+
+;; Event: spalanie odznaki
+(define-public (burn-badge (token-id uint))
+  (begin
+    (asserts! (is-eq tx-sender contract-owner) err-owner-only)
+    (nft-burn? commitment-badge token-id)
+    (print {event: "badge-burned", token-id: token-id})
+    (ok true)
   )
 )

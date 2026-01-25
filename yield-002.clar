@@ -24,6 +24,7 @@
     (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
     (map-set user-stakes tx-sender (+ current-stake amount))
     (var-set total-staked (+ (var-get total-staked) amount))
+    (print {event: "yield-staked", user: tx-sender, amount: amount})
     (ok amount)))
 
 ;; Unstake assets
@@ -33,13 +34,16 @@
     (try! (as-contract (stx-transfer? amount tx-sender tx-sender)))
     (map-set user-stakes tx-sender (- current-stake amount))
     (var-set total-staked (- (var-get total-staked) amount))
+    (print {event: "yield-unstaked", user: tx-sender, amount: amount})
     (ok amount)))
 
 ;; Calculate and distribute rewards
 (define-public (distribute-rewards)
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
-    (ok (calculate-rewards))))
+    (let ((rewards (calculate-rewards)))
+      (print {event: "rewards-distributed", by: tx-sender, rewards: rewards})
+      (ok rewards))))
 
 (define-private (calculate-rewards)
   (let ((total (var-get total-staked))
@@ -55,12 +59,14 @@
   (let ((total (+ (+ staking liquidity) lending)))
     (asserts! (is-eq total u100) (err u400))
     (map-set strategy-allocations tx-sender {staking: staking, liquidity: liquidity, lending: lending})
+    (print {event: "allocation-set", user: tx-sender, staking: staking, liquidity: liquidity, lending: lending})
     (ok true)))
 
 (define-public (update-oracle (new-oracle principal))
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set oracle-contract new-oracle)
+    (print {event: "oracle-updated", by: tx-sender, new-oracle: new-oracle})
     (ok true)))
 
 (define-read-only (get-user-stake (user principal))

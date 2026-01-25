@@ -80,6 +80,7 @@
   ;; The token contract must be set before calling this
   ;; We use contract-call? with a dynamic principal - this requires a trait
   ;; For simplicity, we'll use a different approach below
+  (print {event: "multisend-stx", sender: tx-sender, recipients-count: (len recipients)})
   (ok true)
 )
 
@@ -108,7 +109,7 @@
     ;; Validate
     (asserts! (<= count u10) ERR_EXCEED_MAX)
     (asserts! (> total-amount u0) ERR_ZERO_AMOUNT)
-    
+    (print {event: "multisend-ft", sender: tx-sender, token: token-principal, recipients-count: count, total-amount: total-amount})
     ;; Execute transfers - unrolled loop for up to 10 recipients
     ;; This is the standard pattern in Clarity when you need to use traits in a loop
     (transfer-ft-recipients token-contract recipients)

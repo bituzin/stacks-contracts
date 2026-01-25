@@ -30,6 +30,7 @@
       })
       (map-set sender-last-transfer tx-sender timestamp)
       (var-set next-transfer-id (+ transfer-id u1))
+      (print {event: "stx-sent", transfer-id: transfer-id, sender: tx-sender, recipient: recipient, amount: amount, timestamp: timestamp})
       (ok transfer-id)
     )
   )

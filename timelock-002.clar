@@ -36,6 +36,7 @@
       executed: false,
       cancelled: false
     })
+    (print {event: "timelock-queued", tx-id: tx-id, target: target, function: function-name, eta: eta})
     (ok tx-id)))
 
 ;; Execute transaction
@@ -47,6 +48,7 @@
     (asserts! (not (get cancelled tx-data)) (err u405))
     
     (map-set queued-transactions tx-id (merge tx-data {executed: true}))
+    (print {event: "timelock-executed", tx-id: tx-id})
     (ok true)))
 
 ;; Cancel transaction
@@ -56,6 +58,7 @@
     (asserts! (not (get executed tx-data)) err-already-executed)
     
     (map-set queued-transactions tx-id (merge tx-data {cancelled: true}))
+    (print {event: "timelock-cancelled", tx-id: tx-id})
     (ok true)))
 
 ;; Set delays
@@ -63,12 +66,14 @@
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set min-delay delay)
+    (print {event: "timelock-min-delay-set", delay: delay})
     (ok true)))
 
 (define-public (set-max-delay (delay uint))
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set max-delay delay)
+    (print {event: "timelock-max-delay-set", delay: delay})
     (ok true)))
 
 ;; Read functions

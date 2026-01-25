@@ -20,6 +20,7 @@
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set bridge-paused false)
+    (print {event: "bridge-initialized", by: tx-sender})
     (ok true)))
 
 ;; Lock assets for bridge transfer
@@ -40,7 +41,8 @@
     (asserts! (is-eq (get status tx-data) "locked") (err u405))
     (try! (as-contract (stx-transfer? (get amount tx-data) tx-sender recipient)))
     (map-set bridge-transactions {tx-id: tx-id}
-             (merge tx-data {status: "released"}))
+         (merge tx-data {status: "released"}))
+    (print {event: "bridge-release", tx-id: tx-id, recipient: recipient, amount: (get amount tx-data)})
     (ok (get amount tx-data))))
 
 ;; Emergency pause
@@ -48,6 +50,7 @@
   (begin
     (asserts! (is-eq tx-sender contract-owner) err-unauthorized)
     (var-set bridge-paused true)
+    (print {event: "bridge-paused", by: tx-sender})
     (ok true)))
 
 (define-read-only (get-bridge-status)
