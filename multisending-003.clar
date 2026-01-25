@@ -80,6 +80,7 @@
   ;; The token contract must be set before calling this
   ;; We use contract-call? with a dynamic principal - this requires a trait
   ;; For simplicity, we'll use a different approach below
+  (print {event: "multisend-stx", sender: tx-sender, recipients-count: (len recipients)})
   (ok true)
 )
 
