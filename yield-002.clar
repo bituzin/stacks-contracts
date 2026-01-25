@@ -24,6 +24,7 @@
     (try! (stx-transfer? amount tx-sender (as-contract tx-sender)))
     (map-set user-stakes tx-sender (+ current-stake amount))
     (var-set total-staked (+ (var-get total-staked) amount))
+    (print {event: "yield-staked", user: tx-sender, amount: amount})
     (ok amount)))
 
 ;; Unstake assets
@@ -33,6 +34,7 @@
     (try! (as-contract (stx-transfer? amount tx-sender tx-sender)))
     (map-set user-stakes tx-sender (- current-stake amount))
     (var-set total-staked (- (var-get total-staked) amount))
+    (print {event: "yield-unstaked", user: tx-sender, amount: amount})
     (ok amount)))
 
 ;; Calculate and distribute rewards
