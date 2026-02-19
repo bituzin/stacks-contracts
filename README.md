@@ -4,6 +4,7 @@ This repository contains a set of useful smart contracts for the Stacks blockcha
 
 ## Overview
 
+
 Each `.clar` file in this repository represents a different smart contract, covering a variety of features such as:
 - Token standards (SIP-009, SIP-010)
 - NFT management
@@ -14,6 +15,24 @@ Each `.clar` file in this repository represents a different smart contract, cove
 - Voting
 - Timelocks
 - Vaults and more
+
+## New and Updated Contracts (suffix -05)
+
+The following contracts (ending with `-05.clar`) have been recently added or updated for the MineStxweeper app:
+
+- **achievement-nft-05.clar** – NFT achievements for players
+- **board-generator-05.clar** – Board generation logic for the game
+- **daily-challenge-05.clar** – Daily challenge management
+- **economy-05.clar** – In-game economy and rewards
+- **game-core-05.clar** – Core game logic and state
+- **gm-05.clar** – Good-morning (GM) interaction contract
+- **leaderboard-05.clar** – Leaderboard tracking and ranking
+- **player-profile-05.clar** – Player profile and stats
+- **tournament-05.clar** – Tournament management
+- **wager-05.clar** – Wagering and betting logic
+- **win-checker-05.clar** – Win condition verification
+
+These contracts are tailored for the MineStxweeper dApp and provide modular, up-to-date logic for game features, player engagement, and rewards.
 
 ## Recent Improvements
 
